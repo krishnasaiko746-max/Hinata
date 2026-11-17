@@ -19,14 +19,16 @@ class HinataApp(App):
             padding=15,
             spacing=12
         )
-
         self.output = Label(
             text="Hello! ❤️ Main HINATA hoon.\nBatao, main tumhari kya help kar sakti hoon?",
-            font_size=19,
+            font_size=22,
             halign="center",
-            valign="middle"
+            valign="middle",
+            size_hint_y=0.70,
+            text_size=(root.width - 30, None)
         )
         root.add_widget(self.output)
+        self.output.bind(size=lambda instance, value: setattr(instance, "text_size", (value[0] - 30, None)))
 
         self.msg = TextInput(
             hint_text="Yahan message likho...",
