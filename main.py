@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from jnius import autoclass, PythonJavaClass, java_method
 
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
@@ -12,7 +13,10 @@ from kivy.graphics import Color, RoundedRectangle
 
 
 class HinataApp(App):
-
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tts = None
+        self.tts_ready = False
     def build(self):
         Window.clearcolor = (0.12, 0.06, 0.18, 1)
         root = FloatLayout()
@@ -55,38 +59,13 @@ class HinataApp(App):
             root.add_widget(button)
 
         make_button("🎙️", 0.50, 0.30, 0.22, 0.13, self.voice)
-        make_button("⌨️", 0.25, 0.30, 0.20, 0.08, self.keyboard)
         make_button("📷", 0.75, 0.30, 0.20, 0.08, self.camera)
+        make_button("", 0.16, 0.14, 0.21, 0.10, self.memory)
+        make_button("", 0.39, 0.14, 0.21, 0.10, self.chat)
+        make_button("", 0.85, 0.14, 0.20, 0.10, self.apps)
+        make_button("", 0.62, 0.14, 0.21, 0.10, self.phone)
 
-        make_button("Memory", 0.16, 0.14, 0.21, 0.10, self.memory)
-        make_button("AI Chat", 0.39, 0.14, 0.21, 0.10, self.chat)
-        make_button("Phone\nControl", 0.62, 0.14, 0.21, 0.10, self.phone)
-        make_button("Apps", 0.85, 0.14, 0.20, 0.10, self.apps)
-
-        self.message = TextInput(
-            hint_text="यहाँ संदेश लिखें...",
-            multiline=False,
-            size_hint=(0.70, 0.055),
-            pos_hint={"x": 0.16, "y": 0.035},
-            background_color=(0.20, 0.08, 0.28, 0.75),
-            foreground_color=(1, 1, 1, 1),
-            cursor_color=(1, 0.6, 1, 1),
-            hint_text_color=(0.85, 0.7, 0.9, 1),
-            font_size="16sp"
-        )
-        root.add_widget(self.message)
-
-        send = Button(
-            text="➤",
-            font_size="25sp",
-            background_normal="",
-            background_color=(0.45, 0.12, 0.55, 0.8),
-            size_hint=(0.12, 0.055),
-            pos_hint={"right": 0.97, "y": 0.035}
-        )
-        send.bind(on_release=self.send_message)
-        root.add_widget(send)
-        self.message.bind(on_text_validate=self.send_message)
+        
 
         return root
 
@@ -110,25 +89,19 @@ class HinataApp(App):
         self.message.text = ""
 
     def voice(self, instance):
-        self.reply_label.text = "Voice feature jald jodega! 🎙️"
-
+        pass
     def keyboard(self, instance):
         self.message.focus = True
 
     def camera(self, instance):
-        self.reply_label.text = "Camera feature abhi jodna baaki hai. 📷"
-
+        pass
     def memory(self, instance):
-        self.reply_label.text = "HINATA Memory feature abhi taiyar ho raha hai. 🧠"
-
+        pass
     def chat(self, instance):
-        self.reply_label.text = "HINATA AI Chat mein swagat hai! ❤️"
-
+        pass
     def phone(self, instance):
-        self.reply_label.text = "Phone Control abhi jodna baaki hai. 📱"
-
+        pass
     def apps(self, instance):
-        self.reply_label.text = "Apps section abhi taiyar ho raha hai. 🌸"
-
+        pass
 
 HinataApp().run()
