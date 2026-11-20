@@ -1,30 +1,22 @@
 import os
-from datetime import datetime
-from jnius import autoclass, PythonJavaClass, java_method
 
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
-from kivy.uix.button import Button
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
-from kivy.graphics import Color, RoundedRectangle
 
 
 class HinataApp(App):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.tts = None
-        self.tts_ready = False
+
     def build(self):
-        Window.clearcolor = (0.12, 0.06, 0.18, 1)
+        Window.clearcolor = (0, 0, 0, 1)
+
         root = FloatLayout()
 
         image_path = os.path.join(
             os.path.dirname(__file__),
             "assets",
-            "hinata_ui.jpg"
+            "hinata_final.png"
         )
 
         background = Image(
@@ -34,74 +26,10 @@ class HinataApp(App):
             size_hint=(1, 1),
             pos_hint={"x": 0, "y": 0}
         )
+
         root.add_widget(background)
-
-        self.reply_label = Label(
-            text="",
-            font_size="16sp",
-            color=(1, 1, 1, 1),
-            size_hint=(0.8, 0.07),
-            pos_hint={"center_x": 0.5, "center_y": 0.48}
-        )
-        root.add_widget(self.reply_label)
-
-        def make_button(text, x, y, w, h, callback):
-            button = Button(
-                text=text,
-                font_size="15sp",
-                background_normal="",
-                background_color=(0.25, 0.05, 0.35, 0.12),
-                color=(1, 1, 1, 1),
-                size_hint=(w, h),
-                pos_hint={"center_x": x, "center_y": y}
-            )
-            button.bind(on_release=callback)
-            root.add_widget(button)
-
-        make_button("🎙️", 0.50, 0.30, 0.22, 0.13, self.voice)
-        make_button("📷", 0.75, 0.30, 0.20, 0.08, self.camera)
-        make_button("", 0.16, 0.14, 0.21, 0.10, self.memory)
-        make_button("", 0.39, 0.14, 0.21, 0.10, self.chat)
-        make_button("", 0.85, 0.14, 0.20, 0.10, self.apps)
-        make_button("", 0.62, 0.14, 0.21, 0.10, self.phone)
-
-        
 
         return root
 
-    def send_message(self, instance):
-        message = self.message.text.strip().lower()
-        if not message:
-            return
-
-        if "hello" in message or "hi" in message:
-            answer = "Hello! ❤️ Kaise ho? Main HINATA hoon!"
-        elif "naam" in message or "name" in message:
-            answer = "Mera naam HINATA hai! 🌸"
-        elif "time" in message or "समय" in message:
-            answer = datetime.now().strftime("Abhi %I:%M %p ho rahe hain.")
-        elif "date" in message or "तारीख" in message:
-            answer = datetime.now().strftime("Aaj %d-%m-%Y hai.")
-        else:
-            answer = "Main sun rahi hoon! ❤️ Abhi mera AI brain jodna baaki hai."
-
-        self.reply_label.text = answer
-        self.message.text = ""
-
-    def voice(self, instance):
-        pass
-    def keyboard(self, instance):
-        self.message.focus = True
-
-    def camera(self, instance):
-        pass
-    def memory(self, instance):
-        pass
-    def chat(self, instance):
-        pass
-    def phone(self, instance):
-        pass
-    def apps(self, instance):
-        pass
 
 HinataApp().run()
